@@ -165,5 +165,28 @@ router.put('/update/:id', async (req, res) => {
 
 
 
+router.put("/update-meta-details/:id", async (req, res) => {
+  const { id } = req.params;
+  const { metaTitle, metaDescription } = req.body;
+
+  try {
+    const updated = await HomePage.findOneAndUpdate(
+      { _id: id },
+      { metaTitle, metaDescription },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: "Page not found" });
+    }
+
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: "Update failed", error: error.message });
+  }
+});
+
+
+
 
 module.exports = router;
